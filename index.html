@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Street Force</title>
+  <title>Fluxo Diário</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark">
@@ -18,40 +18,40 @@
 
   <header>
     <button id="theme-btn" aria-label="Alternar tema">◐</button>
-    <h1>Street Force</h1>
-    <p>Calistenia & Street Workout</p>
+    <h1>Fluxo Diário</h1>
+    <p>Rotina completa • To-Do</p>
   </header>
 
   <main class="grid">
-    <article class="card" data-id="planche">
+    <article class="card" data-id="manha">
+      <div class="icon">🌅</div>
+      <h2>Manhã</h2>
+      <p>Começo do dia</p>
+    </article>
+    <article class="card" data-id="treino">
       <div class="icon">💪</div>
-      <h2>Planche</h2>
-      <p>Força horizontal</p>
+      <h2>Treino</h2>
+      <p>Calistenia leve</p>
     </article>
-    <article class="card" data-id="handstand">
-      <div class="icon">🤸</div>
-      <h2>Handstand</h2>
-      <p>Equilíbrio invertido</p>
+    <article class="card" data-id="estudo">
+      <div class="icon">📚</div>
+      <h2>Estudo</h2>
+      <p>Foco e aprendizado</p>
     </article>
-    <article class="card" data-id="frontlever">
-      <div class="icon">🏋️</div>
-      <h2>Front Lever</h2>
-      <p>Controle total</p>
+    <article class="card" data-id="trabalho">
+      <div class="icon">💼</div>
+      <h2>Trabalho</h2>
+      <p>Produtividade</p>
     </article>
-    <article class="card" data-id="muscleup">
-      <div class="icon">🔥</div>
-      <h2>Muscle Up</h2>
-      <p>Potência explosiva</p>
+    <article class="card" data-id="lazer">
+      <div class="icon">🎮</div>
+      <h2>Lazer</h2>
+      <p>Recarga</p>
     </article>
-    <article class="card" data-id="humanflag">
-      <div class="icon">🚩</div>
-      <h2>Human Flag</h2>
-      <p>Força lateral</p>
-    </article>
-    <article class="card" data-id="backlever">
-      <div class="icon">🌀</div>
-      <h2>Back Lever</h2>
-      <p>Mobilidade + força</p>
+    <article class="card" data-id="noite">
+      <div class="icon">🌙</div>
+      <h2>Noite</h2>
+      <p>Encerramento</p>
     </article>
   </main>
 
@@ -65,29 +65,29 @@
 
   <script>
     const data = {
-      planche: {
-        title: "Planche",
-        items: ["Tuck planche holds", "Advanced tuck", "Straddle planche", "Full planche progressions"]
+      manha: {
+        title: "Manhã",
+        items: ["Acordar 6h30", "Água + alongamento", "Café da manhã", "Planejar o dia"]
       },
-      handstand: {
-        title: "Handstand",
-        items: ["Wall holds", "Freestanding balance", "Handstand push-up", "Press to handstand"]
+      treino: {
+        title: "Treino",
+        items: ["Aquecimento 5min", "Pull-ups / push-ups", "Core (plank / lever)", "Alongamento final"]
       },
-      frontlever: {
-        title: "Front Lever",
-        items: ["Tuck front lever", "Advanced tuck", "One-leg lever", "Full front lever"]
+      estudo: {
+        title: "Estudo",
+        items: ["Pomodoro 25/5", "Revisão ativa", "Exercícios práticos", "Anotar dúvidas"]
       },
-      muscleup: {
-        title: "Muscle Up",
-        items: ["False grip pulls", "Transition drills", "Explosive pull-ups", "Bar & ring muscle-up"]
+      trabalho: {
+        title: "Trabalho",
+        items: ["Prioridades do dia", "Deep work 2h", "Pausas curtas", "Revisar entregas"]
       },
-      humanflag: {
-        title: "Human Flag",
-        items: ["Vertical flag holds", "Tuck flag", "Straddle flag", "Full human flag"]
+      lazer: {
+        title: "Lazer",
+        items: ["Caminhada ou série", "Hobby livre", "Conversa com amigos", "Música"]
       },
-      backlever: {
-        title: "Back Lever",
-        items: ["German hangs", "Tuck back lever", "Advanced tuck", "Full back lever"]
+      noite: {
+        title: "Noite",
+        items: ["Jantar leve", "Organizar amanhã", "Leitura relaxante", "Dormir 22h30"]
       }
     };
 
