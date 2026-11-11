@@ -4,13 +4,34 @@
   box-sizing: border-box;
 }
 
+:root {
+  --aqua: #00d4c8;
+  --aqua-deep: #0099a8;
+  --aqua-soft: #7ef0e8;
+  --glass: rgba(0, 180, 190, 0.12);
+  --glass-border: rgba(0, 220, 210, 0.35);
+  --text: #e0f7f6;
+  --bg: #020a0c;
+}
+
+body.light {
+  --aqua: #008c88;
+  --aqua-deep: #006b6a;
+  --aqua-soft: #00b8b0;
+  --glass: rgba(0, 140, 140, 0.18);
+  --glass-border: rgba(0, 160, 155, 0.4);
+  --text: #0a2a2a;
+  --bg: #e8f6f5;
+}
+
 body {
   min-height: 100vh;
-  background: #000;
-  color: #e0e0ff;
+  background: var(--bg);
+  color: var(--text);
   font-family: "Segoe UI", system-ui, sans-serif;
   overflow-x: hidden;
   position: relative;
+  transition: background 0.4s, color 0.4s;
 }
 
 .scene {
@@ -23,26 +44,26 @@ body {
 
 .shape {
   position: absolute;
-  opacity: 0.35;
+  opacity: 0.4;
   animation: float 18s infinite ease-in-out;
 }
 
 .cube {
   width: 70px;
   height: 70px;
-  background: linear-gradient(135deg, #00f5ff, #ff00aa, #7b2fff);
+  background: linear-gradient(135deg, var(--aqua), var(--aqua-deep), var(--aqua-soft));
   transform-style: preserve-3d;
   top: 15%;
   left: 10%;
   animation-delay: 0s;
-  box-shadow: 0 0 40px #00f5ff66;
+  box-shadow: 0 0 40px rgba(0, 212, 200, 0.4);
 }
 
 .cube::before {
   content: "";
   position: absolute;
   inset: 8px;
-  background: #000;
+  background: var(--bg);
   transform: translateZ(20px);
 }
 
@@ -50,11 +71,11 @@ body {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #00f5ff, #7b2fff 60%, #ff00aa);
+  background: radial-gradient(circle at 30% 30%, var(--aqua-soft), var(--aqua) 55%, var(--aqua-deep));
   top: 60%;
   left: 75%;
   animation-delay: -4s;
-  box-shadow: 0 0 50px #ff00aa55;
+  box-shadow: 0 0 50px rgba(0, 180, 190, 0.35);
 }
 
 .pyramid {
@@ -62,11 +83,11 @@ body {
   height: 0;
   border-left: 45px solid transparent;
   border-right: 45px solid transparent;
-  border-bottom: 80px solid #7b2fff;
+  border-bottom: 80px solid var(--aqua);
   top: 30%;
   left: 80%;
   animation-delay: -8s;
-  filter: drop-shadow(0 0 25px #7b2fff);
+  filter: drop-shadow(0 0 25px rgba(0, 212, 200, 0.5));
 }
 
 .c2 {
@@ -93,23 +114,15 @@ body {
   border-left-width: 30px;
   border-right-width: 30px;
   border-bottom-width: 55px;
-  border-bottom-color: #00f5ff;
+  border-bottom-color: var(--aqua-soft);
   animation-delay: -10s;
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotateX(0) rotateY(0) rotateZ(0);
-  }
-  25% {
-    transform: translateY(-40px) rotateX(90deg) rotateY(45deg) rotateZ(20deg);
-  }
-  50% {
-    transform: translateY(20px) rotateX(180deg) rotateY(90deg) rotateZ(-30deg);
-  }
-  75% {
-    transform: translateY(-25px) rotateX(270deg) rotateY(135deg) rotateZ(15deg);
-  }
+  0%, 100% { transform: translateY(0) rotateX(0) rotateY(0) rotateZ(0); }
+  25% { transform: translateY(-40px) rotateX(90deg) rotateY(45deg) rotateZ(20deg); }
+  50% { transform: translateY(20px) rotateX(180deg) rotateY(90deg) rotateZ(-30deg); }
+  75% { transform: translateY(-25px) rotateX(270deg) rotateY(135deg) rotateZ(15deg); }
 }
 
 header {
@@ -119,14 +132,34 @@ header {
   padding: 3rem 1rem 1.5rem;
 }
 
+#theme-btn {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  color: var(--aqua);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#theme-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 18px rgba(0, 212, 200, 0.4);
+}
+
 header h1 {
   font-size: clamp(2.2rem, 6vw, 3.5rem);
-  background: linear-gradient(90deg, #00f5ff, #ff00aa, #7b2fff);
+  background: linear-gradient(90deg, var(--aqua-soft), var(--aqua), var(--aqua-deep));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   letter-spacing: -1px;
-  text-shadow: 0 0 40px #00f5ff33;
 }
 
 header p {
@@ -147,47 +180,45 @@ header p {
 }
 
 .card {
-  background: rgba(15, 15, 30, 0.75);
-  border: 1px solid rgba(0, 245, 255, 0.25);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: 18px;
   padding: 1.6rem 1.2rem;
   text-align: center;
   cursor: pointer;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
 .card:hover {
   transform: translateY(-8px) scale(1.03);
-  border-color: #ff00aa;
-  box-shadow: 0 12px 40px rgba(255, 0, 170, 0.25), 0 0 20px rgba(0, 245, 255, 0.15);
+  border-color: var(--aqua);
+  box-shadow: 0 12px 40px rgba(0, 212, 200, 0.25), 0 0 20px rgba(0, 180, 190, 0.15);
 }
 
 .card .icon {
   font-size: 2.4rem;
   margin-bottom: 0.6rem;
-  filter: drop-shadow(0 0 8px #00f5ff88);
+  filter: drop-shadow(0 0 8px rgba(0, 212, 200, 0.5));
 }
 
 .card h2 {
   font-size: 1.25rem;
   margin-bottom: 0.3rem;
-  background: linear-gradient(90deg, #00f5ff, #7b2fff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--aqua);
 }
 
 .card p {
   font-size: 0.9rem;
-  opacity: 0.65;
+  opacity: 0.7;
 }
 
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 10, 12, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,21 +228,27 @@ header p {
   transition: opacity 0.3s, visibility 0.3s;
 }
 
+body.light .modal {
+  background: rgba(200, 240, 238, 0.75);
+}
+
 .modal.open {
   opacity: 1;
   visibility: visible;
 }
 
 .modal-content {
-  background: linear-gradient(160deg, #0a0a18, #12122a);
-  border: 1px solid rgba(0, 245, 255, 0.3);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
   padding: 2rem;
   width: min(90%, 380px);
   position: relative;
   transform: scale(0.9);
   transition: transform 0.3s;
-  box-shadow: 0 0 60px rgba(123, 47, 255, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 0 50px rgba(0, 180, 190, 0.2);
 }
 
 .modal.open .modal-content {
@@ -224,7 +261,7 @@ header p {
   right: 16px;
   background: none;
   border: none;
-  color: #ff00aa;
+  color: var(--aqua);
   font-size: 1.8rem;
   cursor: pointer;
   line-height: 1;
@@ -232,10 +269,7 @@ header p {
 
 #modal-title {
   margin-bottom: 1rem;
-  background: linear-gradient(90deg, #00f5ff, #ff00aa);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--aqua);
 }
 
 #modal-body ul {
@@ -244,7 +278,7 @@ header p {
 
 #modal-body li {
   padding: 0.55rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(0, 200, 190, 0.15);
   padding-left: 1.2rem;
   position: relative;
 }
@@ -253,7 +287,7 @@ header p {
   content: "▸";
   position: absolute;
   left: 0;
-  color: #00f5ff;
+  color: var(--aqua);
 }
 
 #modal-body li:last-child {
