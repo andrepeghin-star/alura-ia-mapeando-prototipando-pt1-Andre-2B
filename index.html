@@ -3,140 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fluxo Diário</title>
+  <title>Fluxo</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark">
-  <div class="scene">
-    <div class="shape cube"></div>
-    <div class="shape sphere"></div>
-    <div class="shape pyramid"></div>
-    <div class="shape cube c2"></div>
-    <div class="shape sphere s2"></div>
-    <div class="shape pyramid p2"></div>
+  <div class="ambient" aria-hidden="true">
+    <span class="orb o1"></span>
+    <span class="orb o2"></span>
+    <span class="orb o3"></span>
   </div>
 
-  <header>
-    <button id="theme-btn" aria-label="Alternar tema">◐</button>
-    <h1>Fluxo Diário</h1>
-    <p>Rotina • To-Do List</p>
-  </header>
+  <main class="shell">
+    <header class="topbar">
+      <div class="mark">
+        <div class="glyph">F</div>
+        <div>
+          <div class="kicker">Rotina</div>
+          <div class="word">Fluxo</div>
+        </div>
+      </div>
+      <button type="button" id="theme-btn" class="icon-btn" aria-label="Alternar tema">◐</button>
+    </header>
 
-  <main class="grid">
-    <article class="card" data-id="manha">
-      <div class="icon">🌅</div>
-      <h2>Manhã</h2>
-      <p>5h30 – 7h</p>
-    </article>
-    <article class="card" data-id="escola">
-      <div class="icon">🏫</div>
-      <h2>Escola</h2>
-      <p>7h – 12h</p>
-    </article>
-    <article class="card" data-id="almoco">
-      <div class="icon">🍽️</div>
-      <h2>Almoço</h2>
-      <p>12h – 13h30</p>
-    </article>
-    <article class="card" data-id="treino">
-      <div class="icon">💪</div>
-      <h2>Calistenia</h2>
-      <p>Tarde</p>
-    </article>
-    <article class="card" data-id="estudo">
-      <div class="icon">📚</div>
-      <h2>Estudo</h2>
-      <p>Tarde / noite</p>
-    </article>
-    <article class="card" data-id="noite">
-      <div class="icon">🌙</div>
-      <h2>Noite</h2>
-      <p>Encerramento</p>
-    </article>
+    <section class="hero">
+      <h1>Seu dia, em vidro.</h1>
+      <p id="date-label">Hoje</p>
+      <div class="glass progress">
+        <div class="ring" id="ring"><span id="pct">0%</span></div>
+        <div class="progress-copy">
+          <strong id="done-label">0 de 25 feitos</strong>
+          <span>Escola de manhã · Calistenia à tarde</span>
+          <div class="track"><i id="bar"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="blocks" id="blocks"></section>
+
+    <div class="footer">
+      <button type="button" id="clear-btn" class="text-btn">Limpar o dia</button>
+    </div>
   </main>
 
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <button class="close">&times;</button>
-      <h2 id="modal-title"></h2>
-      <div id="modal-body"></div>
-    </div>
-  </div>
-
   <script>
-    const data = {
-      manha: {
-        title: "Manhã (5h30 – 7h)",
-        items: ["Acordar 5h30", "Água + alongamento", "Café da manhã", "Organizar mochila", "Sair de casa"]
-      },
-      escola: {
-        title: "Escola (7h – 12h)",
-        items: ["Aula 1", "Aula 2", "Intervalo", "Aula 3", "Aula 4", "Voltar pra casa"]
-      },
-      almoco: {
-        title: "Almoço (12h – 13h30)",
-        items: ["Almoçar", "Descansar um pouco", "Organizar material"]
-      },
-      treino: {
-        title: "Calistenia (Tarde)",
-        items: ["Aquecimento 5min", "Pull-ups / push-ups", "Core (plank)", "Alongamento"]
-      },
-      estudo: {
-        title: "Estudo",
-        items: ["Revisar matérias do dia", "Pomodoro 25/5", "Exercícios", "Anotar dúvidas"]
-      },
-      noite: {
-        title: "Noite",
-        items: ["Jantar", "Organizar amanhã", "Leitura ou lazer", "Dormir 22h"]
-      }
-    };
+    const BLOCKS = [
+      { id: "manha", title: "Manhã", time: "5:30 – 7:00", items: ["Acordar", "Água e alongamento", "Café da manhã", "Mochila pronta", "Sair de casa"] },
+      { id: "escola", title: "Escola", time: "7:00 – 12:00", items: ["Primeira aula", "Segunda aula", "Intervalo", "Terceira aula", "Voltar pra casa"] },
+      { id: "almoco", title: "Almoço", time: "12:00 – 13:30", items: ["Almoçar", "Descansar", "Separar o material"] },
+      { id: "treino", title: "Calistenia", time: "14:00 – 15:30", items: ["Aquecimento", "Pull-ups e push-ups", "Core e plank", "Alongamento"] },
+      { id: "estudo", title: "Estudo", time: "16:00 – 18:30", items: ["Revisar o dia", "Pomodoro", "Exercícios", "Anotar dúvidas"] },
+      { id: "noite", title: "Noite", time: "19:00 – 22:00", items: ["Jantar", "Lazer curto", "Organizar amanhã", "Dormir"] }
+    ];
 
-    const modal = document.getElementById("modal");
-    const title = document.getElementById("modal-title");
-    const body = document.getElementById("modal-body");
-    const closeBtn = document.querySelector(".close");
+    const TOTAL = BLOCKS.reduce((n, b) => n + b.items.length, 0);
+    const KEY = "fluxo-checks";
+    const THEME = "fluxo-theme";
+
+    function load() {
+      try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return {}; }
+    }
+    function save(data) {
+      localStorage.setItem(KEY, JSON.stringify(data));
+    }
+
+    let checks = load();
+    let confirmClear = false;
+
+    const blocksEl = document.getElementById("blocks");
+    const pctEl = document.getElementById("pct");
+    const doneEl = document.getElementById("done-label");
+    const barEl = document.getElementById("bar");
+    const ringEl = document.getElementById("ring");
+    const clearBtn = document.getElementById("clear-btn");
     const themeBtn = document.getElementById("theme-btn");
+    const dateEl = document.getElementById("date-label");
 
-    function getChecks(id) {
-      return JSON.parse(localStorage.getItem("todo-" + id) || "{}");
+    try {
+      const raw = new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
+      dateEl.textContent = raw.charAt(0).toUpperCase() + raw.slice(1);
+    } catch {}
+
+    if (localStorage.getItem(THEME) === "light") {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
     }
-    function saveCheck(id, index, checked) {
-      const checks = getChecks(id);
-      checks[index] = checked;
-      localStorage.setItem("todo-" + id, JSON.stringify(checks));
+
+    function countDone() {
+      return Object.values(checks).filter(Boolean).length;
     }
 
-    document.querySelectorAll(".card").forEach(card => {
-      card.addEventListener("click", () => {
-        const id = card.dataset.id;
-        const info = data[id];
-        const checks = getChecks(id);
-        title.textContent = info.title;
-        body.innerHTML = "<ul class='todo-list'>" + info.items.map((item, i) => {
-          const checked = checks[i] ? "checked" : "";
-          return `<li><label><input type="checkbox" data-id="${id}" data-i="${i}" ${checked}> <span>${item}</span></label></li>`;
-        }).join("") + "</ul>";
-        modal.classList.add("open");
+    function updateProgress() {
+      const done = countDone();
+      const pct = Math.round((done / TOTAL) * 100);
+      pctEl.textContent = pct + "%";
+      doneEl.textContent = done + " de " + TOTAL + " feitos";
+      barEl.style.width = pct + "%";
+      ringEl.style.setProperty("--p", pct);
+    }
 
-        body.querySelectorAll("input[type=checkbox]").forEach(cb => {
-          cb.addEventListener("change", () => {
-            saveCheck(cb.dataset.id, cb.dataset.i, cb.checked);
-            cb.nextElementSibling.classList.toggle("done", cb.checked);
-          });
-          if (cb.checked) cb.nextElementSibling.classList.add("done");
+    function render() {
+      blocksEl.innerHTML = BLOCKS.map(block => {
+        const finished = block.items.filter((_, i) => checks[block.id + ":" + i]).length;
+        const chip = finished === block.items.length ? "chip full" : "chip";
+        const rows = block.items.map((item, i) => {
+          const k = block.id + ":" + i;
+          const on = !!checks[k];
+          return `<li>
+            <button type="button" class="row" role="checkbox" aria-checked="${on}" data-key="${k}">
+              <span class="box">${on ? "✓" : ""}</span>
+              <span class="label">${item}</span>
+            </button>
+          </li>`;
+        }).join("");
+        return `<article class="glass block">
+          <div class="block-head">
+            <div>
+              <div class="block-title">${block.title}</div>
+              <div class="block-time">${block.time}</div>
+            </div>
+            <span class="${chip}">${finished}/${block.items.length}</span>
+          </div>
+          <ul class="list">${rows}</ul>
+        </article>`;
+      }).join("");
+
+      blocksEl.querySelectorAll(".row").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const k = btn.dataset.key;
+          checks[k] = !checks[k];
+          save(checks);
+          confirmClear = false;
+          clearBtn.textContent = "Limpar o dia";
+          clearBtn.classList.remove("warn");
+          render();
         });
       });
-    });
-
-    closeBtn.addEventListener("click", () => modal.classList.remove("open"));
-    modal.addEventListener("click", e => {
-      if (e.target === modal) modal.classList.remove("open");
-    });
+      updateProgress();
+    }
 
     themeBtn.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      document.body.classList.toggle("light");
+      const light = document.body.classList.toggle("light");
+      document.body.classList.toggle("dark", !light);
+      localStorage.setItem(THEME, light ? "light" : "dark");
     });
+
+    clearBtn.addEventListener("click", () => {
+      if (!confirmClear) {
+        confirmClear = true;
+        clearBtn.textContent = "Confirmar limpar o dia";
+        clearBtn.classList.add("warn");
+        return;
+      }
+      checks = {};
+      save(checks);
+      confirmClear = false;
+      clearBtn.textContent = "Limpar o dia";
+      clearBtn.classList.remove("warn");
+      render();
+    });
+
+    render();
   </script>
 </body>
 </html>
