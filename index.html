@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Rotina</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scene">
+    <div class="shape cube"></div>
+    <div class="shape sphere"></div>
+    <div class="shape pyramid"></div>
+    <div class="shape cube c2"></div>
+    <div class="shape sphere s2"></div>
+    <div class="shape pyramid p2"></div>
+  </div>
+
+  <header>
+    <h1>Nexus Rotina</h1>
+    <p>Seu dia em órbita</p>
+  </header>
+
+  <main class="grid">
+    <article class="card" data-id="estudo">
+      <div class="icon">📚</div>
+      <h2>Estudo</h2>
+      <p>Foco e evolução</p>
+    </article>
+    <article class="card" data-id="trabalho">
+      <div class="icon">💼</div>
+      <h2>Trabalho</h2>
+      <p>Produtividade real</p>
+    </article>
+    <article class="card" data-id="lazer">
+      <div class="icon">🎮</div>
+      <h2>Lazer</h2>
+      <p>Recarga total</p>
+    </article>
+    <article class="card" data-id="hobby">
+      <div class="icon">🎨</div>
+      <h2>Hobby</h2>
+      <p>Criatividade livre</p>
+    </article>
+    <article class="card" data-id="esportes">
+      <div class="icon">⚽</div>
+      <h2>Esportes</h2>
+      <p>Corpo em movimento</p>
+    </article>
+    <article class="card" data-id="saude">
+      <div class="icon">💚</div>
+      <h2>Saúde</h2>
+      <p>Equilíbrio vital</p>
+    </article>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="close">&times;</button>
+      <h2 id="modal-title"></h2>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      estudo: {
+        title: "Estudo",
+        items: ["Pomodoro 25/5", "Leitura ativa", "Revisão semanal", "Mapas mentais"]
+      },
+      trabalho: {
+        title: "Trabalho",
+        items: ["Prioridades claras", "Bloqueio de distrações", "Stand-up diário", "Entrega semanal"]
+      },
+      lazer: {
+        title: "Lazer",
+        items: ["Filme ou série", "Jogos", "Passeio livre", "Música alta"]
+      },
+      hobby: {
+        title: "Hobby",
+        items: ["Desenho digital", "Escrita criativa", "Instrumento", "Fotografia"]
+      },
+      esportes: {
+        title: "Esportes",
+        items: ["Corrida leve", "Musculação", "Alongamento", "Esporte coletivo"]
+      },
+      saude: {
+        title: "Saúde",
+        items: ["Sono 7-8h", "Hidratação", "Meditação", "Check-up"]
+      }
+    };
+
+    const modal = document.getElementById("modal");
+    const title = document.getElementById("modal-title");
+    const body = document.getElementById("modal-body");
+    const closeBtn = document.querySelector(".close");
+
+    document.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("click", () => {
+        const id = card.dataset.id;
+        const info = data[id];
+        title.textContent = info.title;
+        body.innerHTML = "<ul>" + info.items.map(i => `<li>${i}</li>`).join("") + "</ul>";
+        modal.classList.add("open");
+      });
+    });
+
+    closeBtn.addEventListener("click", () => modal.classList.remove("open"));
+    modal.addEventListener("click", e => {
+      if (e.target === modal) modal.classList.remove("open");
+    });
+  </script>
+</body>
+</html>
